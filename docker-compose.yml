@@ -5,14 +5,11 @@ services:
     ports:
       - '127.0.0.1:80:80'
     volumes:
-      - nginx:/etc/nginx
       - www:/data/www
     networks:
       - default
 volumes:
   www:
-    external: false
-  nginx:
     external: false
 networks:
   default:
