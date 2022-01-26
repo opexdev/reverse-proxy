@@ -7,13 +7,15 @@ services:
     volumes:
       - nginx:/etc/nginx
       - www:/data/www
+    networks:
+      - default
 volumes:
   www:
     external: false
   nginx:
     external: false
 networks:
-  opex:
+  default:
     driver: bridge
     external:
       name: ${DEFAULT_NETWORK_NAME:-opex}
