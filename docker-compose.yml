@@ -3,7 +3,7 @@ services:
   nginx:
     build: .
     ports:
-      - '80:80'
+      - '127.0.0.1:80:80'
     volumes:
       - nginx:/etc/nginx
       - www:/data/www
@@ -12,3 +12,8 @@ volumes:
     external: false
   nginx:
     external: false
+networks:
+  opex:
+    driver: bridge
+    external:
+      name: ${DEFAULT_NETWORK_NAME:-opex}
