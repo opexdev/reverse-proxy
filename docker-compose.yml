@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  nginx:
+    build: .
+    ports:
+      - '80:80'
+    volumes:
+      - nginx:/etc/nginx
+      - www:/data/www
+volumes:
+  www:
+    external: false
+  nginx:
+    external: false
