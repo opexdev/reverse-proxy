@@ -14,5 +14,4 @@ volumes:
 networks:
   default:
     driver: bridge
-    external:
-      name: ${DEFAULT_NETWORK_NAME:-opex}
+    name: ${DEFAULT_NETWORK_NAME:-opex}
