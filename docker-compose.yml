@@ -8,6 +8,9 @@ services:
       - www:/data/www
     networks:
       - default
+    deploy:
+      restart_policy:
+        condition: on-failure
 volumes:
   www:
     external: false
