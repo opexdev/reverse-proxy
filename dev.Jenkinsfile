@@ -8,7 +8,7 @@ pipeline {
                 DEFAULT_NETWORK_NAME = 'dev-opex'
             }
             steps {
-                sh 'docker-compose up -d --build --remove-orphans'
+                sh 'docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --remove-orphans'
                 sh 'docker image prune -f'
                 sh 'docker network prune -f'
             }
