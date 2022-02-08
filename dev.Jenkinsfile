@@ -4,7 +4,7 @@ pipeline {
     stages('Deploy') {
         stage('Deliver') {
             environment {
-                COMPOSE_PROJECT_NAME = 'dev-core'
+                COMPOSE_PROJECT_NAME = 'dev-nginx'
                 DEFAULT_NETWORK_NAME = 'dev-opex'
             }
             steps {
