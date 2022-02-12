@@ -8,6 +8,13 @@ pipeline {
                 DEFAULT_NETWORK_NAME = 'dev-opex'
             }
             steps {
+                withCredentials([
+                    file(credentialsId: 'private.pem', variable: 'PRIVATE'),
+                    file(credentialsId: 'opex.dev.crt', variable: 'PUBLIC')
+                ]) {
+                    sh 'cp -f $PRIVATE ./private.pem'
+                    sh 'cp -f $PUBLIC ./opex.dev.crt'
+                }
                 sh 'docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --remove-orphans'
                 sh 'docker image prune -f'
                 sh 'docker network prune -f'
