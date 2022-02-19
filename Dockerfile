@@ -1,2 +1,2 @@
 FROM jboesl/docker-nginx-headers-more
-COPY nginx.conf /etc/nginx/nginx.conf
+ADD nginx.conf opex.dev.crt private.pem /etc/nginx/
