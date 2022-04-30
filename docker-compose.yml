@@ -1,18 +1,5 @@
 version: '3.8'
 services:
   nginx:
+    image: ghcr.io/opexdev/nginx:$TAG
     build: .
-    volumes:
-      - www:/data/www
-    networks:
-      - default
-    deploy:
-      restart_policy:
-        condition: on-failure
-volumes:
-  www:
-    external: false
-networks:
-  default:
-    driver: bridge
-    name: ${DEFAULT_NETWORK_NAME:-opex}
