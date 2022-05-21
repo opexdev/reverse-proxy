@@ -5,3 +5,6 @@
 *.pem
 *.crt
 *.der
+
+# Misc
+.env
