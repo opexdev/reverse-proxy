@@ -1,2 +1,2 @@
-# OPEX-Nginx
-Nginx's docker configurations for OPEX exchange
+# reverse-proxy
+Configuring NGINX as reverse proxy for OPEX exchange
