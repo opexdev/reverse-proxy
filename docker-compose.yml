@@ -2,7 +2,6 @@ version: '3.8'
 services:
   nginx:
     image: ghcr.io/opexdev/nginx:$TAG
-    build:
-      context: .
-      args:
-        - EXPOSED_PORT=$EXPOSED_PORT
+    build: .
+    environment:
+      - EXPOSED_PORT=$EXPOSED_PORT
