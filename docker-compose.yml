@@ -3,5 +3,7 @@ services:
   nginx:
     image: ghcr.io/opexdev/nginx:$TAG
     build: .
+    ports:
+      - "$EXPOSED_PORT:443"
     environment:
       - EXPOSED_PORT=$EXPOSED_PORT
