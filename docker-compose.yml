@@ -1,7 +1,15 @@
 version: '3.8'
 services:
   nginx:
-    image: ghcr.io/opexdev/nginx:$TAG
+    image: ghcr.io/opexdev/nginx
     build: .
     environment:
       - EXPOSED_PORT=$EXPOSED_PORT
+    secrets:
+      - opex_dev_crt
+      - private_pem
+secrets:
+  opex_dev_crt:
+    file: opex.dev.crt
+  private_pem:
+    file: private.pem
