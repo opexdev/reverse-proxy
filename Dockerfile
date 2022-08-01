@@ -2,5 +2,15 @@ FROM nginx:1.20.2
 COPY nginx.conf /etc/nginx/nginx.conf.org
 COPY health-check.conf netnegar.conf /etc/nginx/
 ENV EXPOSED_PORT 443
-ENTRYPOINT sh -c 'envsubst \$EXPOSED_PORT < /etc/nginx/nginx.conf.org | tee /etc/nginx/nginx.conf && nginx -g "daemon off;"'
+ENV SERVER_NAME_DASHBOARD dashbrd-demo.opex.dev
+ENV SERVER_NAME_ADMIN_PANEL adm-demo.opex.dev
+ENV SERVER_NAME_WEB_APP demo.opex.dev
+ENV SERVER_NAME_AUTH auth-demo.opex.dev
+ENV SERVER_NAME_API api.opex.dev
+ENTRYPOINT sh -c 'envsubst \$EXPOSED_PORT \
+                           \$SERVER_NAME_DASHBOARD \
+                           \$SERVER_NAME_ADMIN_PANEL \
+                           \$SERVER_NAME_WEB_APP \
+                           \$SERVER_NAME_AUTH \
+                           \$SERVER_NAME_API < /etc/nginx/nginx.conf.org | tee /etc/nginx/nginx.conf && nginx -g "daemon off;"'
 EXPOSE 443
