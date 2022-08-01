@@ -5,6 +5,11 @@ services:
     build: .
     environment:
       - EXPOSED_PORT=$EXPOSED_PORT
+      - SERVER_NAME_DASHBOARD=$SERVER_NAME_DASHBOARD
+      - SERVER_NAME_ADMIN_PANEL=$SERVER_NAME_ADMIN_PANEL
+      - SERVER_NAME_WEB_APP=$SERVER_NAME_WEB_APP
+      - SERVER_NAME_AUTH=$SERVER_NAME_AUTH
+      - SERVER_NAME_API=$SERVER_NAME_API
     secrets:
       - opex_dev_crt
       - private_pem
