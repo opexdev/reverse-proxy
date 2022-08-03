@@ -10,6 +10,7 @@ services:
       - SERVER_NAME_WEB_APP=$SERVER_NAME_WEB_APP
       - SERVER_NAME_AUTH=$SERVER_NAME_AUTH
       - SERVER_NAME_API=$SERVER_NAME_API
+      - SERVER_NAME_KIBANA=$SERVER_NAME_KIBANA
     secrets:
       - opex_dev_crt
       - private_pem
