@@ -14,6 +14,7 @@ services:
       - SERVER_NAME_KIBANA=$SERVER_NAME_KIBANA
       - SERVER_NAME_GRAFANA=$SERVER_NAME_GRAFANA
       - SERVER_NAME_MOBILE_APP=$SERVER_NAME_MOBILE_APP
+      - SERVER_WALLET_STAT=$SERVER_WALLET_STAT
     secrets:
       - opex_dev_crt
       - private_pem
