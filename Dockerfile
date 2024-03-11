@@ -1,6 +1,6 @@
 FROM nginx:1.20.2
 COPY nginx.conf /etc/nginx/nginx.conf.org
-COPY health-check.conf netnegar.conf /etc/nginx/
+COPY health-check.conf /etc/nginx/
 ENV EXPOSED_PORT 443
 ENV SERVER_NAME_DASHBOARD dashboard.opex.dev
 ENV SERVER_NAME_ADMIN_PANEL admin.opex.dev

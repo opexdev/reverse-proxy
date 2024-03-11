@@ -18,6 +18,11 @@ services:
     secrets:
       - opex_dev_crt
       - private_pem
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.1.0
+    ports:
+      - "9113:9113"
+    command: --nginx.scrape-uri=http://nginx:443/metrics --web.telemetry-path=/metrics
 secrets:
   opex_dev_crt:
     file: opex.dev.crt
