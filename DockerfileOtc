@@ -1,0 +1,15 @@
+FROM nginx:1.20.2
+COPY nginx.conf /etc/nginx/nginx.conf.org
+COPY health-check.conf netnegar.conf /etc/nginx/
+ENV EXPOSED_PORT 443
+ENV SERVER_NAME_ADMIN_PANEL admin.opex.ir
+ENV SERVER_NAME_WEB_APP app.polban.ir
+ENV SERVER_NAME_AUTH auth.polban.ir
+ENV SERVER_NAME_HEALTH health.polban.ir
+ENV SERVER_NAME_API api.polban.ir
+ENTRYPOINT sh -c 'envsubst \
+\$EXPOSED_PORT,\$SERVER_NAME_DASHBOARD,\$SERVER_NAME_ADMIN_PANEL,\$SERVER_NAME_WEB_APP,\$SERVER_NAME_AUTH,\$SERVER_NAME_HEALTH,\$SERVER_NAME_API,\$SERVER_NAME_MOBILE_APP,\$SERVER_NAME_GRAFANA,\$SERVER_NAME_KIBANA \
+< /etc/nginx/nginx.conf.org \
+| tee /etc/nginx/nginx.conf \
+&& nginx -g "daemon off;"'
+EXPOSE 443

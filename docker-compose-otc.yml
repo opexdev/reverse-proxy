@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  nginx:
+    image:  nginx:latest
+    build:
+      dockerfile: DockerfileOtc
+    environment:
+      - EXPOSED_PORT=$EXPOSED_PORT
+      - SERVER_NAME_DASHBOARD=$SERVER_NAME_DASHBOARD
+      - SERVER_NAME_ADMIN_PANEL=$SERVER_NAME_ADMIN_PANEL
+      - SERVER_NAME_WEB_APP=$SERVER_NAME_WEB_APP
+      - SERVER_NAME_AUTH=$SERVER_NAME_AUTH
+      - SERVER_NAME_HEALTH=$SERVER_NAME_HEALTH
+      - SERVER_NAME_API=$SERVER_NAME_API
+      - SERVER_NAME_KIBANA=$SERVER_NAME_KIBANA
+      - SERVER_NAME_GRAFANA=$SERVER_NAME_GRAFANA
+      - SERVER_NAME_MOBILE_APP=$SERVER_NAME_MOBILE_APP
+#    secrets:
+#      - opex_dev_crt
+#      - private_pem
+secrets:
+  opex_dev_crt:
+    file: opex.dev.crt
+  private_pem:
+    file: private.pem
