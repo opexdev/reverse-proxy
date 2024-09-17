@@ -23,9 +23,10 @@ services:
     networks:
       - otc-network
     ports:
-      - $EXPOSED_PORT:80
-      -
+      - ${EXPOSED_PORT}:80
     env_file: .env
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
 
 networks:
   otc-network:

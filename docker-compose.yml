@@ -17,6 +17,7 @@ services:
     secrets:
       - opex_dev_crt
       - private_pem
+
 secrets:
   opex_dev_crt:
     file: opex.dev.crt
