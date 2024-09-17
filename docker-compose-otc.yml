@@ -18,6 +18,12 @@ services:
 #    secrets:
 #      - opex_dev_crt
 #      - private_pem
+    networks:
+      - otc-network
+networks:
+  otc-network:
+    external: true
+
 secrets:
   opex_dev_crt:
     file: opex.dev.crt
