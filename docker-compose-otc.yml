@@ -18,8 +18,15 @@ services:
 #    secrets:
 #      - opex_dev_crt
 #      - private_pem
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - otc-network
+    ports:
+      - $EXPOSED_PORT:80
+      -
+    env_file: .env
+
 networks:
   otc-network:
     external: true
