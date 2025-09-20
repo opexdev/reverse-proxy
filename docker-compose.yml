@@ -14,9 +14,17 @@ services:
       - SERVER_NAME_KIBANA=$SERVER_NAME_KIBANA
       - SERVER_NAME_GRAFANA=$SERVER_NAME_GRAFANA
       - SERVER_NAME_MOBILE_APP=$SERVER_NAME_MOBILE_APP
+      - SERVER_WALLET_STAT=$SERVER_WALLET_STAT
+      - SERVER_NAME_KC=$SERVER_NAME_KC
+      - SERVER_NAME_V2_AUTH=$SERVER_NAME_V2_AUTH
     secrets:
       - opex_dev_crt
       - private_pem
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.1.0
+    ports:
+      - "9113:9113"
+    command: --nginx.scrape-uri=http://nginx:443/metrics --web.telemetry-path=/metrics
 secrets:
   opex_dev_crt:
     file: opex.dev.crt
