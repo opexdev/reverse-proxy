@@ -17,9 +17,12 @@ services:
       - SERVER_WALLET_STAT=$SERVER_WALLET_STAT
       - SERVER_NAME_KC=$SERVER_NAME_KC
       - SERVER_NAME_V2_AUTH=$SERVER_NAME_V2_AUTH
+      - SERVER_NAME_BETA_APP=$SERVER_NAME_BETA_APP
     secrets:
       - opex_dev_crt
       - private_pem
+    volumes:
+      - /var/www:/var/www:ro
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:1.1.0
     ports:
