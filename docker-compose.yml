@@ -18,6 +18,7 @@ services:
       - SERVER_NAME_KC=$SERVER_NAME_KC
       - SERVER_NAME_V2_AUTH=$SERVER_NAME_V2_AUTH
       - SERVER_NAME_BETA_APP=$SERVER_NAME_BETA_APP
+      - SERVER_NAME_SWAGGER=$SERVER_NAME_SWAGGER
     secrets:
       - opex_dev_crt
       - private_pem
