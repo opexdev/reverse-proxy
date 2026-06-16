@@ -1,0 +1,41 @@
+# Enable ModSecurity
+SecRuleEngine On
+SecRequestBodyAccess On
+SecResponseBodyAccess Off
+
+# Logging
+SecAuditEngine RelevantOnly
+SecAuditLog /var/log/modsec_audit.log
+SecAuditLogParts AIJDEFHZ
+SecAuditLogType Serial
+
+SecTmpDir /tmp/
+SecDataDir /tmp/
+
+# Default actions
+SecDefaultAction "phase:1,log,auditlog,pass"
+SecDefaultAction "phase:2,log,auditlog,pass"
+
+############################################################
+# 1. Block dangerous HTML/script tags in all requests
+############################################################
+SecRule ARGS|ARGS_NAMES|REQUEST_COOKIES|REQUEST_HEADERS|REQUEST_BODY \
+  "@rx (?i:<\s*/?\s*(script|iframe|object|embed|applet|meta|svg|link|body|html|base|form|style|frame|frameset|img|video|audio|source|input|button|textarea|select|option|xmp)\b[^>]*>)" \
+  "id:1001,phase:2,t:none,deny,log,msg:'Blocked dangerous HTML/script tag in request'"
+
+############################################################
+# 2. Block dangerous MIME types
+SecRule REQUEST_HEADERS:Content-Type "@rx (?i)(application/x-php|application/x-msdownload|application/x-sh|text/x-python|application/x-msdos-program)" \
+  "id:1002,phase:1,t:none,deny,log,msg:'Blocked dangerous MIME type'"
+
+############################################################
+# 3. Block direct access to dangerous file URIs
+SecRule REQUEST_URI "@rx (?i)\.(php[0-9]?|phtml|phar|asp|aspx|jsp|exe|sh|bat|pl|py|cgi)(\?|$)" \
+  "id:1003,phase:1,t:none,deny,log,msg:'Blocked direct request to dangerous file type in URI'"
+
+############################################################
+# 4. Code injection patterns
+SecRule REQUEST_BODY "(?i)(<\?php|system\(|exec\(|shell_exec\(|passthru\(|popen\(|cmd\.exe|/bin/sh|/bin/bash)" \
+  "id:1004,phase:2,t:none,deny,log,msg:'Blocked possible code injection pattern'"
+
+

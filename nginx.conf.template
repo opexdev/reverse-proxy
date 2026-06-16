@@ -1,8 +1,12 @@
+user nginx;
+pid /var/run/nginx.pid;
 worker_processes auto;
+load_module /etc/nginx/modules/ngx_http_modsecurity_module.so;
 
 events {
-    worker_connections 1024;
+        worker_connections 1024;
 }
+
 
 http {
     access_log /var/log/nginx/access.log;
@@ -41,7 +45,7 @@ http {
     proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header   X-Forwarded-Proto $scheme;
     proxy_set_header   X-Forwarded-Host $server_name;
-    proxy_set_header   X-Forwarded-Port $EXPOSED_PORT;
+    proxy_set_header   X-Forwarded-Port ${EXPOSED_PORT};
 
     resolver 127.0.0.11 valid=60s;
 
@@ -63,6 +67,22 @@ http {
         1  /var/www/mobile;
     }
 
+    real_ip_header X-Forwarded-For;
+    set_real_ip_from 0.0.0.0/0;
+    real_ip_recursive on;
+
+
+    # Lua
+     lua_package_path "/etc/nginx/lua/?.lua;;";
+
+    # ModSecurity global
+     modsecurity on;
+     modsecurity_rules_file /etc/nginx/modsecurity/modsecurity.conf;
+
+   # Lua global for all requests
+     access_by_lua_file /etc/nginx/lua/upload_check.lua;
+
+
     server {
         listen 80;
 
@@ -75,7 +95,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_WALLET_STAT;
+        server_name ${SERVER_WALLET_STAT};
 
         location / {
             add_header Access-Control-Allow-Credentials true always;
@@ -91,7 +111,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_KIBANA;
+        server_name ${SERVER_NAME_KIBANA};
 
         location / {
             set $backend http://kibana:5601;
@@ -103,7 +123,18 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_GRAFANA;
+        server_name ${SERVER_NAME_SWAGGER};
+
+        location / {
+            set $backend http://swagger-docs:8080;
+            proxy_pass $backend;
+        }
+    }
+    server {
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        server_name ${SERVER_NAME_GRAFANA};
 
         location / {
             set $backend http://grafana:3000;
@@ -115,7 +146,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_ADMIN_PANEL;
+        server_name ${SERVER_NA}ME_ADMIN_PANEL};
 
         location ~* \.(.*)$ {
             set $backend http://admin-panel;
@@ -134,7 +165,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_ADMIN_V2_PANEL;
+        server_name ${SERVER_NAME_ADMIN_V2_PANEL};
 
         location ~* \.(.*)$ {
             set $backend http://admin-v2-panel-nginx;
@@ -152,7 +183,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_WEB_APP;
+        server_name ${SERVER_NA}ME_WEB_APP};
 
         location ~* \.(.*)$ {
             set $backend http://web-app;
@@ -170,7 +201,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_MOBILE_APP;
+        server_name ${SERVER_NAME_MOBILE_APP};
 
         location ~* \.(.*)$ {
             set $backend http://mobile-app;
@@ -188,7 +219,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_AUTH;
+        server_name ${SERVER_NAME_AUTH};
 
         location / {
             set $backend http://auth:8080;
@@ -201,7 +232,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_KC;
+        server_name ${SERVER_NAME_KC};
 
         location / {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -217,7 +248,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_V2_AUTH;
+        server_name ${SERVER_NAME_V2_AUTH};
 
         if ($request_method = 'OPTIONS') {
             return 204;
@@ -259,7 +290,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_HEALTH;
+        server_name ${SERVER_NAME_HEALTH};
 
         location /accountant {
             set $backend http://accountant:8080;
@@ -349,7 +380,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name $SERVER_NAME_API;
+        server_name ${SERVER_NAME_API};
 
         if ($request_method = 'OPTIONS') {
             return 204;
@@ -474,54 +505,21 @@ http {
 
 
       location /binance {
-
-          # target upstream (IMPORTANT: must be variable for DNS resolution)
-          set $backend https://binance.beeep.ir;
-
-          # route path
-          rewrite ^/binance/(.*)$ /$1 break;
-
-          # upstream connection settings
-          proxy_pass $backend;
-
-          # correct upstream identity
-          proxy_set_header Host binance.beeep.ir;
-          proxy_ssl_server_name on;
-          proxy_ssl_name binance.beeep.ir;
-
-          # client headers
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-
-          # timeouts (important for slow Binance-like APIs)
-          proxy_connect_timeout 60s;
-          proxy_send_timeout 300s;
-          proxy_read_timeout 300s;
-          send_timeout 300s;
-
-          # retry logic (VERY IMPORTANT for your error)
-          proxy_next_upstream error timeout invalid_header http_502 http_503 http_504;
-          proxy_next_upstream_tries 3;
-          proxy_next_upstream_timeout 60s;
-
-          # TLS (since upstream is HTTPS)
-          proxy_ssl_verify off;
-
-          # avoid buffering issues for slow responses
-          proxy_buffering off;
-          proxy_request_buffering off;
-
-          # stability
-          proxy_intercept_errors off;
-      }
+                 proxy_set_header Host api.binance.com;
+                 proxy_set_header X-Real-IP '';
+                 proxy_set_header X-Forwarded-For '';
+                 proxy_set_header X-Forwarded-Host '';
+                 set $backend https://api.binance.com;
+                 proxy_pass $backend;
+                 rewrite ^/binance/(.*)$ /$1 break;
+             }
 
     }
 
 
    server {
          listen 443 ssl http2;
-         server_name $SERVER_NAME_BETA_APP;
+         server_name ${SERVER_NAME_BETA_APP};
 
            set $web_app_root /var/www/desktop;
 
