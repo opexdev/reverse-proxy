@@ -146,7 +146,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name ${SERVER_NA}ME_ADMIN_PANEL};
+        server_name ${SERVER_NAME_ADMIN_PANEL};
 
         location ~* \.(.*)$ {
             set $backend http://admin-panel;
@@ -183,7 +183,7 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        server_name ${SERVER_NA}ME_WEB_APP};
+        server_name ${SERVER_NAME_WEB_APP};
 
         location ~* \.(.*)$ {
             set $backend http://web-app;
@@ -503,16 +503,15 @@ http {
       resolver 127.0.0.11 valid=30s;
       resolver_timeout 15s;
 
-
       location /binance {
-                 proxy_set_header Host api.binance.com;
-                 proxy_set_header X-Real-IP '';
-                 proxy_set_header X-Forwarded-For '';
-                 proxy_set_header X-Forwarded-Host '';
-                 set $backend https://api.binance.com;
-                 proxy_pass $backend;
-                 rewrite ^/binance/(.*)$ /$1 break;
-             }
+            proxy_set_header Host api.binance.com;
+            proxy_set_header X-Real-IP '';
+            proxy_set_header X-Forwarded-For '';
+            proxy_set_header X-Forwarded-Host '';
+            set $backend https://api.binance.com;
+            proxy_pass $backend;
+            rewrite ^/binance/(.*)$ /$1 break;
+        }
 
     }
 
