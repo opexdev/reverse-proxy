@@ -395,9 +395,9 @@ http {
 
         include /etc/nginx/health-check.conf;
 
-        location = /opex-config {
+        location = /app-config.json {
             default_type application/json;
-            alias /tmp/opex-config.json;
+            alias /var/www/app-config.json;
         }
 
         location /wallet/transfer {
