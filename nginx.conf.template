@@ -395,6 +395,11 @@ http {
             return 204;
         }
 
+        location = /app-config.json {
+            default_type application/json;
+            alias /var/www/app-config.json;
+        }
+
         include /etc/nginx/health-check.conf;
 
         location /wallet/transfer {
