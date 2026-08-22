@@ -395,6 +395,11 @@ http {
 
         include /etc/nginx/health-check.conf;
 
+        location = /opex-config {
+            default_type application/json;
+            alias /tmp/opex-config.json;
+        }
+
         location /wallet/transfer {
             return 403;
         }
