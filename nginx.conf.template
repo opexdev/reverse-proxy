@@ -358,6 +358,7 @@ http {
             proxy_pass $backend;
             rewrite ^/auth(.*)$ /actuator/health/$1 break;
         }
+
         location /auth-gateway {
             set $backend http://auth-gateway:8080;
             proxy_pass $backend;
@@ -527,43 +528,13 @@ http {
       resolver_timeout 15s;
 
       location /binance {
-            # Target upstream (must use a variable for Docker DNS resolution)
-            set $backend https://binance.beeep.ir;
-
-            # Rewrite the request path
-            rewrite ^/binance/(.*)$ /$1 break;
-
-            # Proxy request to upstream
+            proxy_set_header Host api.binance.com;
+            proxy_set_header X-Real-IP '';
+            proxy_set_header X-Forwarded-For '';
+            proxy_set_header X-Forwarded-Host '';
+            set $backend https://api.binance.com;
             proxy_pass $backend;
-
-            # Upstream host and TLS configuration
-            proxy_set_header Host binance.beeep.ir;
-            proxy_ssl_server_name on;
-            proxy_ssl_name binance.beeep.ir;
-            proxy_ssl_verify off;
-
-            # Forward client information
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-
-            # Connection and response timeouts
-            proxy_connect_timeout 60s;
-            proxy_send_timeout 300s;
-            proxy_read_timeout 300s;
-            send_timeout 300s;
-
-            # Retry failed upstream requests
-            proxy_next_upstream error timeout invalid_header http_502 http_503 http_504;
-            proxy_next_upstream_tries 3;
-            proxy_next_upstream_timeout 60s;
-
-            # Disable buffering for long-running responses
-            proxy_buffering off;
-            proxy_request_buffering off;
-
-            # Return upstream errors directly
-            proxy_intercept_errors off;
+            rewrite ^/binance/(.*)$ /$1 break;
         }
 
     }
