@@ -403,7 +403,7 @@ http {
         location = /app-config.json {
             default_type application/json;
             alias /var/www/app-config.json;
-            add_header Access-Control-Allow-Origin "" always;
+            add_header Access-Control-Allow-Origin "*" always;
         }
 
         location /wallet/transfer {
