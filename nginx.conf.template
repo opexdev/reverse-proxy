@@ -566,24 +566,24 @@ http {
            }
    }
     server {
-               listen 443 ssl http2;
-               server_name ${SERVER_NAME_LIGHT_APP};
+           listen 443 ssl http2;
+           server_name ${SERVER_NAME_LIGHT_APP};
 
-                 set $web_app_root /var/www/light-app/desktop;
+             set $web_app_root /var/www/light-app/desktop;
 
-                 if ($http_user_agent ~* (iphone|ipod|android|blackberry|windows\ phone|mobile|opera\ mini|iemobile)) {
-                     set $web_app_root /var/www/light-app/mobile;
-                 }
+             if ($http_user_agent ~* (iphone|ipod|android|blackberry|windows\ phone|mobile|opera\ mini|iemobile)) {
+                 set $web_app_root /var/www/light-app/mobile;
+             }
 
-                 location / {
-                     root $web_app_root;
-                     try_files $uri $uri/ /index.html;
-                 }
+             location / {
+                 root $web_app_root;
+                 try_files $uri $uri/ /index.html;
+             }
 
-                 location = /index.html {
-                     root $web_app_root;
-                     add_header Cache-Control "no-cache, no-store, must-revalidate";
-                 }
+             location = /index.html {
+                 root $web_app_root;
+                 add_header Cache-Control "no-cache, no-store, must-revalidate";
+             }
          }
 
 }
