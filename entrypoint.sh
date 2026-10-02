@@ -22,6 +22,8 @@ $SERVER_NAME_BETA_APP
 $SERVER_NAME_SWAGGER
 $SERVER_NAME_ADMIN_V2_PANEL
 $SERVER_NAME_LIGHT_APP
+$SERVER_NAME_OTC_APP
+
 ' \
 < /etc/nginx/nginx.conf.template \
 > /etc/nginx/nginx.conf
