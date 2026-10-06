@@ -173,7 +173,8 @@ http {
         client_max_body_size 50M;
 
         location / {
-            proxy_pass http://admin-v2-panel-nginx;
+            set $backend http://localhost:${ADMIN_V2_PANEL_PORT};
+            proxy_pass $backend;
 
             proxy_http_version 1.1;
 
