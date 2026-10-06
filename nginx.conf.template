@@ -173,8 +173,7 @@ http {
         client_max_body_size 50M;
 
         location / {
-            set $backend http://host.docker.internal:${ADMIN_V2_PANEL_PORT};
-            proxy_pass $backend;
+            proxy_pass http://${ADMIN_V2_PANEL_HOST}:${ADMIN_V2_PANEL_PORT};
 
             proxy_http_version 1.1;
 
