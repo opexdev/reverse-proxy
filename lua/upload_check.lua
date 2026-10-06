@@ -1,5 +1,5 @@
 local allowed_ext = {".png", ".jpg", ".jpeg"}
-local blocked_ext = {".php", ".exe", ".sh", ".bat", ".js" , ".svg"}  -- dangerous extensions
+local blocked_ext = {".php", ".exe", ".sh", ".bat", ".js", ".svg"}  -- dangerous extensions
 
 local function ends_with(str, ending)
     return str:lower():sub(-#ending) == ending:lower()
@@ -68,4 +68,3 @@ if content_type and content_type:find("multipart/form-data", 1, true) and not is
     end
 end
 -- ngx.req.discard_body()
-
