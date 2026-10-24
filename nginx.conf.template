@@ -421,6 +421,14 @@ http {
             return 403;
         }
 
+        location /profile/admin/profile/users/resolve {
+            return 403;
+        }
+
+         location /profile/bank-account/owner {
+            return 403;
+        }
+
         location /auth {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
