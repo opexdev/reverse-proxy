@@ -33,7 +33,8 @@ local admin_ips = {
     ["188.136.193.194"] = true,
     ["193.186.32.236"] = true,
     ["188.75.66.34"] = true,
-    ["23.88.48.226"] =true
+    ["23.88.48.226"] = true,
+    ["80.210.52.7"] = true
 }
 local client_ip = ngx.var.remote_addr
 local is_admin = admin_ips[client_ip] or false
