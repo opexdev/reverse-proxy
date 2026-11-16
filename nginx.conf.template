@@ -171,7 +171,7 @@ http {
 
         server_name ${SERVER_NAME_ADMIN_V2_PANEL};
 
-            client_max_body_size 100M;
+            client_max_body_size 50M;
             client_body_buffer_size 128k;
 
 
@@ -395,6 +395,10 @@ http {
         listen 443 ssl;
         listen [::]:443 ssl;
 
+       client_max_body_size 50M;
+       client_body_buffer_size 128k;
+
+
         server_name ${SERVER_NAME_API};
 
         if ($request_method = 'OPTIONS') {
@@ -421,7 +425,8 @@ http {
             return 403;
         }
 
-        location /profile/admin/profile/users/resolve {
+         location /profile/admin/profile/users/resolve {
+
             return 403;
         }
 
