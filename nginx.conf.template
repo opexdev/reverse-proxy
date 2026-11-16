@@ -426,6 +426,7 @@ http {
         }
 
          location /profile/admin/profile/users/resolve {
+
             return 403;
         }
 
